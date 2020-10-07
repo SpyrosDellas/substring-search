@@ -6,20 +6,14 @@
 
 import edu.princeton.cs.algs4.In;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class RabinKarp {
 
     private static final int R = 65536;  // the radix of the Unicode alphabet
 
     // a large prime that won't cause overflow
-    private final long largePrime = Long.parseLong("10963707205259");
+    private final long largePrime = 10963707205259L;
     private final Map<Long, String> patternHashes;
     private int hashLength;
     private long exponent;
@@ -35,14 +29,13 @@ public class RabinKarp {
             int length = pattern.length();
             if (hashLength == -1) {
                 hashLength = length;
-            }
-            else if (length != hashLength) {
+            } else if (length != hashLength) {
                 throw new IllegalArgumentException("All search patterns must have the same length");
             }
             long hash = hash(pattern, hashLength);
             if (patternHashes.containsKey(hash)) {
                 throw new RuntimeException("Hash collision detected for search terms: "
-                                                   + pattern + ", " + patternHashes.get(hash));
+                        + pattern + ", " + patternHashes.get(hash));
             }
             patternHashes.put(hash, pattern);
         }
@@ -70,7 +63,7 @@ public class RabinKarp {
     public Map<String, List<Integer>> search(String text) {
         Map<String, List<Integer>> result = new HashMap<>();
         for (String pattern : patternHashes.values()) {
-            result.put(pattern, new ArrayList<Integer>());
+            result.put(pattern, new ArrayList<>());
         }
         long textHash = hash(text, hashLength);
         // check for match at the beginning of the text
@@ -112,14 +105,14 @@ public class RabinKarp {
         }
 
         System.out.println("\nSearching text for all occurrences of following "
-                                   + length + "-letter words (total " + patterns.size()
-                                   + " words): \n" + patterns);
+                + length + "-letter words (total " + patterns.size()
+                + " words): \n" + patterns);
 
         System.out.println("\nMethod A - Java String.indexOf()");
         double start = System.currentTimeMillis();
         Map<String, List<Integer>> resultJava = new HashMap<>();
         for (String pattern : patterns) {
-            resultJava.put(pattern, new ArrayList<Integer>());
+            resultJava.put(pattern, new ArrayList<>());
         }
         for (String pattern : patterns) {
             int fromIndex = 0;
